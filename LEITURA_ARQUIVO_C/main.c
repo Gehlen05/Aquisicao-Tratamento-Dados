@@ -23,12 +23,17 @@ int main(){
 	int i = 0;
 	int ret, dados = 0;
     int somatorio_heart = 0;
+	float quantidade = 0.00;
+    float desvio_padrao = 0.00;
+	float media;
 
 	FILE *fp;
 	struct dados *lista;
 	puts("------------------------");
 
-	fp = fopen("heart_rate.csv", "r");
+	// Escolha do arquivo short ou long
+	fp = fopen("heart_rate_short.csv", "r");
+	// fp = fopen("heart_rate_long.csv", "r");
 
 
 	if (fp == NULL){
@@ -36,7 +41,7 @@ int main(){
 		exit(EXIT_FAILURE);
 	}
 
-	// conta o numero de pessoas
+	// conta o numero de aquisicoes
 	while (fgets(buffer,TAM_BUFFER,fp) != NULL) dados++;
 
 	// ignora linha do cabeçalho
@@ -81,7 +86,7 @@ int main(){
 		printf("%d\n", strlen(nome) + 1);
 #endif
 
-		/* Aloca memória para o nome mais \0 */
+		/* Aloca memória para o date e time mais \0 */
 		lista[i].date = malloc(strlen(date) + 1);
         lista[i].time = malloc(strlen(time) + 1);
 
@@ -102,19 +107,18 @@ int main(){
 	for (i=0; i < dados; i++){
         somatorio_heart += lista[i].heart;
 	}
-    float quantidade = 0.00;
-    float desvio_padrao = 0.00;
-    quantidade = i;
-    float media;
+    quantidade = dados;
     media = somatorio_heart/quantidade;
     printf("media: %f\n", media);
     for (i=0; i < dados; i++){
-        // diferenca = (lista[i].heart - media);
+        // diferenca = pow((lista[i].heart - media),2);
         desvio_padrao+= (lista[i].heart - media)*(lista[i].heart - media);
 	}
+	printf("desvio padrao: %f\n", desvio_padrao);
     desvio_padrao = desvio_padrao/quantidade;
-    desvio_padrao = sqrt(desvio_padrao);
-    // printf("diferenca: %f\n", diferenca);
+	// Nao consegui incluir a bibliteca math, para executar pow e sqrt
+    // desvio_padrao = sqrt(desvio_padrao);
+	printf("quantidade de dados: %f\n", quantidade);
     printf("desvio padrao: %f\n", desvio_padrao);
     
     // ajustar as funcoes de calculo.
@@ -129,16 +133,3 @@ int main(){
 
 	return 0;
 }
-
-
-// int somatorio(int *lista, int dados){
-//     int somatorio_heart = 0;
-//     for (int i=0; i < dados; i++){
-//         somatorio_heart += lista[i].heart;
-// 		// printf("date: %s\n", lista[i].date);
-// 		// printf("time: %s\n", lista[i].time );
-// 		// printf("heart: %d\n", lista[i].heart);
-// 		// puts("------------------------");
-// 	}
-//     printf("%d", somatorio_heart);
-// }
