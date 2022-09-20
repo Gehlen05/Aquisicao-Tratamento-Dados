@@ -1,3 +1,5 @@
+//https://github.com/Gehlen05/Aquisicao-Tratamento-Dados
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
